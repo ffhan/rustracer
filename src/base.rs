@@ -1,8 +1,16 @@
 use crate::scene::Scene;
 use crate::vector::Vector;
+use core::borrow::Borrow;
 
 pub trait Intersectable {
-    fn intersect(&self, ray: &Ray) -> bool;
+    fn intersect(&self, ray: &Ray) -> Option<f64>;
+}
+
+pub trait Colorable {
+    fn get_color(&self) -> Color;
+}
+
+pub trait Drawable: Intersectable + Colorable {
 }
 
 #[derive(PartialEq, Debug)]
@@ -47,5 +55,25 @@ impl Ray {
     }
     pub fn get_direction(&self) -> &Vector {
         &self.direction
+    }
+}
+
+pub struct Intersection<'a> {
+    distance: f64,
+    object: &'a Box<dyn Drawable>,
+}
+
+impl <'a> Intersection<'a> {
+    pub fn new(distance: f64, object: &'a Box<dyn Drawable>) -> Intersection {
+        Intersection{
+            distance: distance,
+            object: object,
+        }
+    }
+    pub fn get_distance(&self) -> f64 {
+        self.distance
+    }
+    pub fn get_object(&self) -> &'a Box<dyn Drawable> {
+        self.object
     }
 }

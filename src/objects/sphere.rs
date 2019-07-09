@@ -28,7 +28,7 @@ impl Sphere {
 }
 
 impl Intersectable for Sphere {
-    fn intersect(&self, ray: &Ray) -> bool {
+    fn intersect(&self, ray: &Ray) -> Option<f64> {
         //Create a line segment between the ray origin and the center of the sphere
         let l: Vector = self.center.minus(ray.get_origin());
         //Use l as a hypotenuse and find the length of the adjacent side
@@ -37,6 +37,20 @@ impl Intersectable for Sphere {
         //This is equivalent to (but faster than) (l.length() * l.length()) - (adj2 * adj2)
         let d2 = l.dot(&l) - (&adj2 * &adj2);
         //If that length-squared is less than radius squared, the ray intersects the sphere
-        d2 < (self.radius * self.radius)
+        let radius2 = self.radius * self.radius;
+        if d2 > radius2 {
+            return None;
+        }
+
+        let thc = (radius2 - d2).sqrt();
+        let t0 = adj2 - thc;
+        let t1 = adj2 + thc;
+
+        if t0 < 0.0 && t1 < 0.0 {
+            return None;
+        }
+
+        let distance = if t0 < t1 { t0 } else { t1 };
+        Some(distance)
     }
 }
