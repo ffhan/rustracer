@@ -30,6 +30,10 @@ impl Intersectable for Plane {
         }
         None
     }
+
+    fn surface_normal(&self, _: &Vector) -> Vector {
+        self.normal.clone()
+    }
 }
 
 impl Colorable for Plane {

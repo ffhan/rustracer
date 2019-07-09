@@ -4,6 +4,7 @@ use core::borrow::Borrow;
 
 pub trait Intersectable {
     fn intersect(&self, ray: &Ray) -> Option<f64>;
+    fn surface_normal(&self, hit_point: &Vector) -> Vector;
 }
 
 pub trait Colorable {

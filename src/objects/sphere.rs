@@ -50,6 +50,10 @@ impl Intersectable for Sphere {
         let distance = if t0 < t1 { t0 } else { t1 };
         Some(distance)
     }
+
+    fn surface_normal(&self, hit_point: &Vector) -> Vector {
+        hit_point.minus(&self.center).normalize()
+    }
 }
 
 impl Drawable for Sphere {

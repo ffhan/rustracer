@@ -40,6 +40,9 @@ impl Vector {
             self.x * vec.y - self.y * vec.x
         )
     }
+    pub fn factor(&self, factor: f64) -> Vector {
+        Vector::new(self.x * factor, self.y * factor, self.z * factor)
+    }
 }
 
 impl ops::Add<Vector> for Vector {
