@@ -1,5 +1,5 @@
 use crate::vector::Vector;
-use crate::base::{Color, Intersectable, Ray};
+use crate::base::{Color, Intersectable, Ray, Colorable, Drawable};
 
 #[derive(PartialEq, Debug)]
 pub struct Sphere {
@@ -18,9 +18,6 @@ impl Sphere {
     }
     pub fn get_center(&self) -> &Vector {
         &self.center
-    }
-    pub fn get_color(&self) -> &Color {
-        &self.color
     }
     pub fn get_radius(&self) -> f64 {
         self.radius
@@ -52,5 +49,15 @@ impl Intersectable for Sphere {
 
         let distance = if t0 < t1 { t0 } else { t1 };
         Some(distance)
+    }
+}
+
+impl Drawable for Sphere {
+
+}
+
+impl Colorable for Sphere {
+    fn get_color(&self) -> &Color {
+        &self.color
     }
 }

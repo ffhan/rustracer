@@ -1,6 +1,7 @@
 use crate::base::{Color, Ray, Intersectable, Intersection, Colorable, Drawable};
 use image::{DynamicImage, GenericImage, Rgba};
 use core::borrow::Borrow;
+use std::f64::MAX;
 
 pub struct Scene {
     width: u32,
@@ -54,8 +55,13 @@ impl Scene {
         self.fov
     }
     pub fn trace(&self, ray: &Ray) -> Option<Intersection> {
-        self.objects.iter()
-            .map(|s| s.intersect(ray).map(|d| Intersection::new(d, s)).unwrap())
-            .min_by(|i1, i2| i1.get_distance().partial_cmp(&i2.get_distance()).unwrap())
+        let mut objs = Vec::new();
+        for s in self.objects.iter() {
+            let distance = s.intersect(ray);
+            if distance.is_some() {
+                objs.push(Intersection::new(distance.unwrap(), s));
+            }
+        }
+        objs.into_iter().min_by(|i1, i2| i1.get_distance().partial_cmp(&i2.get_distance()).unwrap())
     }
 }

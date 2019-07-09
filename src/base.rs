@@ -7,7 +7,7 @@ pub trait Intersectable {
 }
 
 pub trait Colorable {
-    fn get_color(&self) -> Color;
+    fn get_color(&self) -> &Color;
 }
 
 pub trait Drawable: Intersectable + Colorable {
