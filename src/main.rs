@@ -13,5 +13,8 @@ fn main() {
             Color::new(128, 255, 0),5.0)
     );
     let img = scene.render();
-    img.save("image.png");
+    let result = img.save("image.png");
+    if result.is_err() {
+        eprintln!("Image save failed!");
+    }
 }

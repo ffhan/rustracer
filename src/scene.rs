@@ -10,7 +10,8 @@ pub struct Scene {
 }
 
 fn to_rgba(col: &Color) -> Rgba<u8> {
-    Rgba([0, 255, 0, 255])
+    let [r, g, b] = col.get();
+    Rgba([r, g, b, 255])
 }
 
 impl Scene {

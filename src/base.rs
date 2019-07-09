@@ -1,6 +1,5 @@
-use crate::vector::Vector;
-use image::{DynamicImage, GenericImage, RgbaImage, Rgba, RGBA};
 use crate::scene::Scene;
+use crate::vector::Vector;
 
 pub trait Intersectable {
     fn intersect(&self, ray: &Ray) -> bool;
@@ -15,22 +14,20 @@ pub struct Color {
 
 impl Color {
     pub fn new(red: u8, green: u8, blue: u8) -> Color {
-        Color{
+        Color {
             red: red,
             green: green,
-            blue: blue
+            blue: blue,
         }
     }
-}
-
-pub struct Pixel {
-    x: u32,
-    y: u32,
+    pub fn get(&self) -> [u8; 3] {
+        [self.red, self.green, self.blue]
+    }
 }
 
 pub struct Ray {
     origin: Vector,
-    direction: Vector
+    direction: Vector,
 }
 
 impl Ray {
@@ -40,7 +37,7 @@ impl Ray {
         let sensor_x = ((((x as f64 + 0.5) / scene.get_width() as f64) * 2.0 - 1.0) * aspect_ratio) * fov_adjustment;
         let sensor_y = (1.0 - ((y as f64 + 0.5) / scene.get_height() as f64) * 2.0) * fov_adjustment;
 
-        Ray{
+        Ray {
             origin: Vector::zero(),
             direction: Vector::new(sensor_x, sensor_y, -1.0).normalize(),
         }
