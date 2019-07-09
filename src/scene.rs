@@ -26,7 +26,7 @@ impl Scene {
     }
     pub fn render(&self) -> DynamicImage {
         let mut image = DynamicImage::new_rgba8(self.width, self.height);
-        let black = Rgba([0, 0, 0, 255]);
+        let black = Rgba([128, 128, 255, 255]);
         for x in 0..self.width {
             for y in 0..self.height {
                 let ray = Ray::new(x, y, self);
