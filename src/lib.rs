@@ -1,7 +1,9 @@
 extern crate image;
 
 pub mod base;
+pub mod scene;
 pub mod vector;
+pub mod objects;
 
 #[cfg(test)]
 mod tests {
