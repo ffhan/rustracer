@@ -17,19 +17,29 @@ fn main() {
         Color::new(100, 100, 100))));
 
     scene.add_object(Box::new(Sphere::new(
-        Vector::new(0.0, 0.0, -15.0),
+        Vector::new(-3.0, 0.0, -10.0),
         Color::new(255, 0, 0),
         4.0
     )));
     scene.add_object(Box::new(Sphere::new(
-        Vector::new(4.0, 0.0, -10.0),
+        Vector::new(4.0, 0.0, -8.0),
         Color::new(0, 255, 0),
         2.0
+    )));
+    scene.add_object(Box::new(Sphere::new(
+        Vector::new(-2.0, 4.0, -6.0),
+        Color::new(128, 128, 128),
+        1.5
     )));
 
     scene.add_light(DirectionalLight::new(
         Vector::new(1.0, -1.0, -1.0),
-        Color::new(255,100, 0),
+        Color::new(255,0, 0),
+        1.0
+    ));
+    scene.add_light(DirectionalLight::new(
+        Vector::new(-1.0, -1.0, -1.0),
+        Color::new(0,255, 255),
         1.0
     ));
     let img = scene.render();

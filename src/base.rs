@@ -51,6 +51,12 @@ impl Ray {
             direction: Vector::new(sensor_x, sensor_y, -1.0).normalize(),
         }
     }
+    pub fn from(origin: Vector, direction: Vector) -> Ray {
+        Ray {
+            origin: origin,
+            direction: direction
+        }
+    }
     pub fn get_origin(&self) -> &Vector {
         &self.origin
     }

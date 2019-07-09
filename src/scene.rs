@@ -6,6 +6,8 @@ use image::{DynamicImage, GenericImage, Rgba};
 use crate::base::{Color, Colorable, Drawable, Intersectable, Intersection, Ray};
 use crate::lighting::directional::DirectionalLight;
 
+const SHADOW_BIAS: f64 = 1e-13;
+
 pub struct Scene {
     width: u32,
     height: u32,
@@ -84,9 +86,16 @@ impl Scene {
         for light in self.lights.iter() {
             let direction_to_light = light.get_direction().neg().normalize();
 
-            let light_intensity = surface_normal.normalize()
+            // calculate if the point is a shadow
+            let shadow_ray = Ray::from(
+                hit_point.clone() + (surface_normal.factor(SHADOW_BIAS)),
+                direction_to_light.clone()
+            );
+            let in_light = self.trace(&shadow_ray).is_none();
+
+            let light_intensity = if in_light {surface_normal.normalize()
                 .dot(&direction_to_light.normalize())
-                .max(0.0) * light.get_intensity();
+                .max(0.0) * light.get_intensity()} else {0.0};
             let light_reflected = 1.0; // todo: implementiraj
 
             let light_color = light.get_color().get();
