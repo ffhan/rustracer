@@ -37,19 +37,19 @@ fn main() {
         DirectionalLight::new(
             Vector::new(1.0, -1.0, -1.0),
             Color::new(255,0, 0),
-            1.0
+            0.5
         )
     ));
     scene.add_light(Box::new(
         DirectionalLight::new(
             Vector::new(-1.0, -1.0, -1.0),
             Color::new(0,255, 255),
-            1.0
+            0.5
         )
     ));
     scene.add_light(Box::new(
        SphericalLight::new(
-           Vector::new(0.0, 9.0, -6.0),
+           Vector::new(0.0, 7.0, -3.0),
            Color::new(255, 255, 255),
            6.0
        )

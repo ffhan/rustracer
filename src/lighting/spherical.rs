@@ -31,6 +31,6 @@ impl Lighting for SphericalLight {
     }
 
     fn get_direction_to_light(&self, hit_point: &Vector) -> Vector {
-        self.position.minus(hit_point).normalize()
+        self.position.minus(hit_point)
     }
 }

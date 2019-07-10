@@ -86,16 +86,20 @@ impl Scene {
 
         for light in self.lights.iter() {
             let direction_to_light = light.get_direction_to_light(&hit_point);
+            let direction_to_light_norm = direction_to_light.normalize();
 
             // calculate if the point is a shadow
             let shadow_ray = Ray::from(
                 hit_point.clone() + (surface_normal.factor(SHADOW_BIAS)),
-                direction_to_light.clone()
+                direction_to_light_norm.clone()
             );
-            let in_light = self.trace(&shadow_ray).is_none();
+
+            let shadow_intersection = self.trace(&shadow_ray);
+            let in_light = shadow_intersection.is_none() ||
+                shadow_intersection.unwrap().get_distance() > direction_to_light.euclidian_distance();;
 
             let light_intensity = if in_light {surface_normal.normalize()
-                .dot(&direction_to_light.normalize())
+                .dot(&direction_to_light_norm)
                 .max(0.0) * light.get_intensity(&hit_point)} else {0.0};
             let light_reflected = 1.0; // todo: implementiraj
 

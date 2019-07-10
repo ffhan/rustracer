@@ -33,6 +33,6 @@ impl Lighting for DirectionalLight {
     }
 
     fn get_direction_to_light(&self, _hit_point: &Vector) -> Vector {
-        self.direction.neg().normalize()
+        self.direction.neg()
     }
 }
