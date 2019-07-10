@@ -4,6 +4,7 @@ use gametest::objects::sphere::Sphere;
 use gametest::scene::Scene;
 use gametest::objects::plane::Plane;
 use gametest::lighting::directional::DirectionalLight;
+use gametest::lighting::spherical::SphericalLight;
 
 fn main() {
     let mut scene: Scene = Scene::new(
@@ -32,15 +33,26 @@ fn main() {
         1.5
     )));
 
-    scene.add_light(DirectionalLight::new(
-        Vector::new(1.0, -1.0, -1.0),
-        Color::new(255,0, 0),
-        1.0
+    scene.add_light(Box::new(
+        DirectionalLight::new(
+            Vector::new(1.0, -1.0, -1.0),
+            Color::new(255,0, 0),
+            1.0
+        )
     ));
-    scene.add_light(DirectionalLight::new(
-        Vector::new(-1.0, -1.0, -1.0),
-        Color::new(0,255, 255),
-        1.0
+    scene.add_light(Box::new(
+        DirectionalLight::new(
+            Vector::new(-1.0, -1.0, -1.0),
+            Color::new(0,255, 255),
+            1.0
+        )
+    ));
+    scene.add_light(Box::new(
+       SphericalLight::new(
+           Vector::new(0.0, 9.0, -6.0),
+           Color::new(255, 255, 255),
+           0.5
+       )
     ));
     let img = scene.render();
     let result = img.save("image.png");

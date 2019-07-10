@@ -14,6 +14,21 @@ impl Vector {
     pub fn new(x: f64, y: f64, z: f64) -> Vector {
         Vector {x: x, y: y, z: z}
     }
+    pub fn from_array(arr: [f64; 3]) -> Vector {
+        Vector {
+            x: arr[0],
+            y: arr[1],
+            z: arr[2]
+        }
+    }
+    pub fn from_vec(vec: Vec<f64>) -> Vector {
+        if vec.len() != 3 {
+            panic!("Invalid vec size {}", vec.len());
+        }
+        let mut arr = [0.0_f64, 0.0, 0.0];
+        vec.into_iter().enumerate().for_each(|(i, e)| arr[i] = e);
+        Vector::from_array(arr)
+    }
     pub fn normalize(&self) -> Vector {
         let distance = self.euclidian_distance();
         Vector::new(self.x / distance, self.y / distance, self.z / distance)

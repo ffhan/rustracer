@@ -5,6 +5,7 @@ use image::{DynamicImage, GenericImage, Rgba};
 
 use crate::base::{Color, Colorable, Drawable, Intersectable, Intersection, Ray};
 use crate::lighting::directional::DirectionalLight;
+use crate::lighting::Lighting;
 
 const SHADOW_BIAS: f64 = 1e-13;
 
@@ -13,7 +14,7 @@ pub struct Scene {
     height: u32,
     fov: f64,
     objects: Vec<Box<dyn Drawable>>,
-    lights: Vec<DirectionalLight>,
+    lights: Vec<Box<dyn Lighting>>,
 }
 
 fn to_rgba(col: &Color) -> Rgba<u8> {
@@ -55,7 +56,7 @@ impl Scene {
     pub fn add_object(&mut self, obj: Box<dyn Drawable>) {
         self.objects.push(obj);
     }
-    pub fn add_light(&mut self, light: DirectionalLight) { self.lights.push(light); }
+    pub fn add_light(&mut self, light: Box<dyn Lighting>) { self.lights.push(light); }
     pub fn get_width(&self) -> u32 {
         self.width
     }
@@ -84,7 +85,7 @@ impl Scene {
         let mut color = [0_f64, 0.0, 0.0];
 
         for light in self.lights.iter() {
-            let direction_to_light = light.get_direction().neg().normalize();
+            let direction_to_light = light.get_direction_to_light(&hit_point);
 
             // calculate if the point is a shadow
             let shadow_ray = Ray::from(
