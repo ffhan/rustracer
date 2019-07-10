@@ -25,8 +25,9 @@ impl Colorable for SphericalLight {
 }
 
 impl Lighting for SphericalLight {
-    fn get_intensity(&self) -> f64 {
-        self.intensity
+    fn get_intensity(&self, hit_point: &Vector) -> f64 {
+        let r2 = self.position.minus(&hit_point).normalize();
+        self.intensity / (4.0 * ::std::f64::consts::PI * r2.euclidian_distance().powf(2.0))
     }
 
     fn get_direction_to_light(&self, hit_point: &Vector) -> Vector {

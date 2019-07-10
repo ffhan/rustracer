@@ -96,7 +96,7 @@ impl Scene {
 
             let light_intensity = if in_light {surface_normal.normalize()
                 .dot(&direction_to_light.normalize())
-                .max(0.0) * light.get_intensity()} else {0.0};
+                .max(0.0) * light.get_intensity(&hit_point)} else {0.0};
             let light_reflected = 1.0; // todo: implementiraj
 
             let light_color = light.get_color().get();

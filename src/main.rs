@@ -51,7 +51,7 @@ fn main() {
        SphericalLight::new(
            Vector::new(0.0, 9.0, -6.0),
            Color::new(255, 255, 255),
-           0.5
+           6.0
        )
     ));
     let img = scene.render();
