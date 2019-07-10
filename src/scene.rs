@@ -100,6 +100,7 @@ impl Scene {
 
             let light_intensity = if in_light {surface_normal.normalize()
                 .dot(&direction_to_light_norm)
+                .powf(intersection.get_object().get_reflection_exponent())
                 .max(0.0) * light.get_intensity(&hit_point)} else {0.0};
             let light_reflected = 1.0; // todo: implementiraj
 

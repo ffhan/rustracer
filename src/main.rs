@@ -15,22 +15,25 @@ fn main() {
     scene.add_object(Box::new(Plane::new(
         Vector::new(0.0, 1.0, 0.0),
     Vector::new(0.0, -2.5, 0.0),
-        Color::new(100, 100, 100))));
+        Color::new(100, 100, 100), 1.0)));
 
     scene.add_object(Box::new(Sphere::new(
         Vector::new(-3.0, 0.0, -10.0),
         Color::new(255, 0, 0),
-        4.0
+        4.0,
+        1.0
     )));
     scene.add_object(Box::new(Sphere::new(
         Vector::new(4.0, 0.0, -8.0),
         Color::new(0, 255, 0),
-        2.0
+        2.0,
+        3.5
     )));
     scene.add_object(Box::new(Sphere::new(
         Vector::new(-2.0, 4.0, -6.0),
         Color::new(128, 128, 128),
-        1.5
+        1.5,
+        1.0,
     )));
 
     scene.add_light(Box::new(
@@ -49,7 +52,7 @@ fn main() {
     ));
     scene.add_light(Box::new(
        SphericalLight::new(
-           Vector::new(0.0, 7.0, -3.0),
+           Vector::new(0.0, 5.0, -5.0),
            Color::new(255, 255, 255),
            6.0
        )

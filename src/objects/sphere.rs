@@ -6,14 +6,16 @@ pub struct Sphere {
     center: Vector,
     color: Color,
     radius: f64,
+    n: f64,
 }
 
 impl Sphere {
-    pub fn new(center: Vector, color: Color, radius: f64) -> Sphere {
+    pub fn new(center: Vector, color: Color, radius: f64, n: f64) -> Sphere {
         Sphere{
             center: center,
             color: color,
-            radius: radius
+            radius: radius,
+            n: n,
         }
     }
     pub fn get_center(&self) -> &Vector {
@@ -57,7 +59,9 @@ impl Intersectable for Sphere {
 }
 
 impl Drawable for Sphere {
-
+    fn get_reflection_exponent(&self) -> f64 {
+        self.n
+    }
 }
 
 impl Colorable for Sphere {

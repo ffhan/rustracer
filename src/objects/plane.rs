@@ -5,14 +5,16 @@ pub struct Plane {
     normal: Vector,
     point: Vector,
     color: Color,
+    n: f64
 }
 
 impl Plane {
-    pub fn new(normal: Vector, point: Vector, color: Color) -> Plane {
+    pub fn new(normal: Vector, point: Vector, color: Color, n: f64) -> Plane {
         Plane {
             normal: normal,
             point: point,
             color: color,
+            n: n,
         }
     }
 }
@@ -43,4 +45,7 @@ impl Colorable for Plane {
 }
 
 impl Drawable for Plane {
+    fn get_reflection_exponent(&self) -> f64 {
+        self.n
+    }
 }

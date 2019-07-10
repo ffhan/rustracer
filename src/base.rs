@@ -12,6 +12,7 @@ pub trait Colorable {
 }
 
 pub trait Drawable: Intersectable + Colorable {
+    fn get_reflection_exponent(&self) -> f64;
 }
 
 #[derive(PartialEq, Debug)]
