@@ -9,7 +9,7 @@ fn main() {
     let mut scene: Scene = Scene::new(
         600,
         400,
-        90.0,
+        80.0,
     );
     scene.add_object(Box::new(Plane::new(
         Vector::new(0.0, 1.0, 0.0),
