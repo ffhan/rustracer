@@ -54,4 +54,31 @@ impl Material {
     }
 }
 
+pub struct CheckeredPatternTexture {
+    color: Color,
+    width: u32,
+    height: u32,
+}
 
+impl CheckeredPatternTexture {
+    pub fn new(color: Color, width: u32, height: u32) -> CheckeredPatternTexture {
+        CheckeredPatternTexture {
+            color: color,
+            width: width,
+            height: height,
+        }
+    } }
+
+impl Texture for CheckeredPatternTexture {
+
+    fn get_color(&self, x: f64, y: f64) -> Color {
+        let mut cell_x = x.round() as u32 / self.width as u32;
+        let cell_y = y.round() as u32 / self.height as u32;
+
+        if (cell_x + cell_y) % 2 == 0 {
+            Color::new(20, 20, 20)
+        } else {
+            self.color.clone()
+        }
+    }
+}
