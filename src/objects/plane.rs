@@ -38,12 +38,8 @@ impl Intersectable for Plane {
 }
 
 impl Drawable for Plane {
-    fn get_glossiness(&self) -> f64 {
-        self.material.get_glossiness()
-    }
-
-    fn get_albedo(&self) -> f64 {
-        self.material.get_albedo()
+    fn get_material(&self) -> &Material {
+        &self.material
     }
 }
 

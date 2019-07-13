@@ -1,5 +1,6 @@
 use crate::scene::Scene;
 use crate::vector::Vector;
+use crate::material::Material;
 
 pub struct Point2D {
     pub x: f64,
@@ -17,8 +18,7 @@ pub trait Textureable {
 }
 
 pub trait Drawable: Intersectable + Textureable {
-    fn get_glossiness(&self) -> f64;
-    fn get_albedo(&self) -> f64;
+    fn get_material(&self) -> &Material;
 }
 
 pub trait Colorable {
@@ -66,6 +66,12 @@ impl Ray {
         Ray {
             origin: origin,
             direction: direction,
+        }
+    }
+    pub fn from_reflection(normal: &Vector, incident: &Vector, intersection: &Vector, bias: f64) -> Ray {
+        Ray {
+            origin: intersection.plus(&normal.factor(bias)),
+            direction: incident.minus(&normal.factor(2.0 * incident.dot(&normal)))
         }
     }
     pub fn get_origin(&self) -> &Vector {

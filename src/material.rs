@@ -4,6 +4,12 @@ pub struct Material {
     texture: Box<dyn Texture>,
     albedo: f64,
     glossiness: f64,
+    surface_type: SurfaceType,
+}
+
+pub enum SurfaceType {
+    Diffuse,
+    Reflective { reflectivity: f64 },
 }
 
 pub trait Texture {
@@ -29,18 +35,20 @@ impl Texture for ConstantTexture {
 }
 
 impl Material {
-    pub fn new(texture: Box<dyn Texture>, albedo: f64, glossiness: f64) -> Material {
+    pub fn new(texture: Box<dyn Texture>, surface_type: SurfaceType, albedo: f64, glossiness: f64) -> Material {
         Material {
             texture: texture,
             albedo: albedo,
             glossiness: glossiness,
+            surface_type: surface_type,
         }
     }
-    pub fn new_constant(color: Color, albedo: f64, glossiness: f64) -> Material {
+    pub fn new_constant(color: Color, surface_type: SurfaceType, albedo: f64, glossiness: f64) -> Material {
         Material {
             texture: Box::new(ConstantTexture::new(color)),
             albedo: albedo,
             glossiness: glossiness,
+            surface_type: surface_type,
         }
     }
     pub fn get_texture(&self) -> &Box<dyn Texture> {
@@ -52,6 +60,7 @@ impl Material {
     pub fn get_albedo(&self) -> f64 {
         self.albedo
     }
+    pub fn get_surface_type(&self) -> &SurfaceType { &self.surface_type }
 }
 
 pub struct CheckeredPatternTexture {
@@ -72,7 +81,7 @@ impl CheckeredPatternTexture {
 impl Texture for CheckeredPatternTexture {
 
     fn get_color(&self, x: f64, y: f64) -> Color {
-        let mut cell_x = x.round() as u32 / self.width as u32;
+        let cell_x = x.round() as u32 / self.width as u32;
         let cell_y = y.round() as u32 / self.height as u32;
 
         if (cell_x + cell_y) % 2 == 0 {

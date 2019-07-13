@@ -14,27 +14,28 @@ fn main() {
     scene.add_object(Box::new(Plane::new(
         Vector::new(0.0, 1.0, 0.0),
         Vector::new(0.0, -2.5, 0.0),
-        Material::new(Box::new(CheckeredPatternTexture::new(Color::new(100, 100, 100), 4, 4)),
-    1.0, 1.0),
+        Material::new(Box::new(CheckeredPatternTexture::new(
+            Color::new(100, 100, 100), 4, 4)),
+    SurfaceType::Reflective {reflectivity: 0.02},1.0, 1.0),
     )));
 
     scene.add_object(Box::new(Sphere::new(
         Vector::new(-3.0, 0.0, -10.0),
         4.0,
         Material::new_constant(Color::new(255, 0, 0),
-                               1.0, 1.0),
+                               SurfaceType::Reflective {reflectivity: 0.04}, 1.0, 1.0),
     )));
     scene.add_object(Box::new(Sphere::new(
         Vector::new(4.0, 0.0, -8.0),
         2.0,
         Material::new_constant(Color::new(0, 255, 0),
-                               1.0, 3.5)
+                               SurfaceType::Diffuse, 1.0, 3.5)
     )));
     scene.add_object(Box::new(Sphere::new(
         Vector::new(-2.0, 4.0, -6.0),
         1.5,
         Material::new_constant(Color::new(128, 128, 128),
-                               1.0, 1.0)
+                               SurfaceType::Reflective {reflectivity: 0.05}, 1.0, 1.0)
     )));
 
     scene.add_light(Box::new(
@@ -65,4 +66,4 @@ fn main() {
     }
 }
 
-use gametest::material::{Material, CheckeredPatternTexture};
+use gametest::material::{Material, CheckeredPatternTexture, SurfaceType};

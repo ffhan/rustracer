@@ -58,12 +58,8 @@ impl Intersectable for Sphere {
 }
 
 impl Drawable for Sphere {
-    fn get_glossiness(&self) -> f64 {
-        self.material.get_glossiness()
-    }
-
-    fn get_albedo(&self) -> f64 {
-        self.material.get_albedo()
+    fn get_material(&self) -> &Material {
+        &self.material
     }
 }
 
