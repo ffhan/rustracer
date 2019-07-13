@@ -1,5 +1,5 @@
-use crate::base::Colorable;
 use crate::vector::Vector;
+use crate::base::Colorable;
 
 pub mod directional;
 pub mod spherical;

@@ -58,6 +58,15 @@ impl Vector {
     pub fn factor(&self, factor: f64) -> Vector {
         Vector::new(self.x * factor, self.y * factor, self.z * factor)
     }
+    pub fn get_x(&self) -> f64 {
+        self.x
+    }
+    pub fn get_y(&self) -> f64 {
+        self.y
+    }
+    pub fn get_z(&self) -> f64 {
+        self.z
+    }
 }
 
 impl ops::Add<Vector> for Vector {

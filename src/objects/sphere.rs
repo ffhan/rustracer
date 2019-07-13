@@ -1,21 +1,20 @@
 use crate::vector::Vector;
-use crate::base::{Color, Intersectable, Ray, Colorable, Drawable};
+use crate::base::{Color, Intersectable, Ray, Drawable, Point2D, Textureable};
+use std::f64::consts::PI;
+use crate::material::Material;
 
-#[derive(PartialEq, Debug)]
 pub struct Sphere {
     center: Vector,
-    color: Color,
     radius: f64,
-    n: f64,
+    material: Material,
 }
 
 impl Sphere {
-    pub fn new(center: Vector, color: Color, radius: f64, n: f64) -> Sphere {
+    pub fn new(center: Vector, radius: f64, material: Material) -> Sphere {
         Sphere{
             center: center,
-            color: color,
             radius: radius,
-            n: n,
+            material: material
         }
     }
     pub fn get_center(&self) -> &Vector {
@@ -59,13 +58,28 @@ impl Intersectable for Sphere {
 }
 
 impl Drawable for Sphere {
-    fn get_reflection_exponent(&self) -> f64 {
-        self.n
+    fn get_glossiness(&self) -> f64 {
+        self.material.get_glossiness()
+    }
+
+    fn get_albedo(&self) -> f64 {
+        self.material.get_albedo()
     }
 }
 
-impl Colorable for Sphere {
-    fn get_color(&self) -> &Color {
-        &self.color
+impl Textureable for Sphere {
+    fn texture_coords(&self, hit_point: &Vector) -> Point2D {
+        let hit_vec = hit_point.minus(&self.center);
+        let phi = hit_vec.get_z().atan2(hit_vec.get_x());
+        let theta = (hit_vec.get_y() / self.radius).acos();
+        Point2D {
+            x: (1.0 + phi / PI) * 0.5,
+            y: theta / PI,
+        }
+    }
+
+    fn get_texture_color(&self, hit_point: &Vector) -> Color {
+        let tex_coords = self.texture_coords(hit_point);
+        self.material.get_texture().get_color(tex_coords.x, tex_coords.y)
     }
 }

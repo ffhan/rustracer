@@ -5,6 +5,7 @@ pub mod scene;
 pub mod vector;
 pub mod objects;
 pub mod lighting;
+pub mod material;
 
 #[cfg(test)]
 mod tests {

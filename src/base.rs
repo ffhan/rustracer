@@ -1,21 +1,31 @@
 use crate::scene::Scene;
 use crate::vector::Vector;
-use core::borrow::Borrow;
+
+pub struct Point2D {
+    pub x: f64,
+    pub y: f64,
+}
 
 pub trait Intersectable {
     fn intersect(&self, ray: &Ray) -> Option<f64>;
     fn surface_normal(&self, hit_point: &Vector) -> Vector;
 }
 
+pub trait Textureable {
+    fn texture_coords(&self, hit_point: &Vector) -> Point2D;
+    fn get_texture_color(&self, hit_point: &Vector) -> Color;
+}
+
+pub trait Drawable: Intersectable + Textureable {
+    fn get_glossiness(&self) -> f64;
+    fn get_albedo(&self) -> f64;
+}
+
 pub trait Colorable {
     fn get_color(&self) -> &Color;
 }
 
-pub trait Drawable: Intersectable + Colorable {
-    fn get_reflection_exponent(&self) -> f64;
-}
-
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Clone)]
 pub struct Color {
     red: u8,
     green: u8,
@@ -55,7 +65,7 @@ impl Ray {
     pub fn from(origin: Vector, direction: Vector) -> Ray {
         Ray {
             origin: origin,
-            direction: direction
+            direction: direction,
         }
     }
     pub fn get_origin(&self) -> &Vector {
@@ -71,9 +81,9 @@ pub struct Intersection<'a> {
     object: &'a Box<dyn Drawable>,
 }
 
-impl <'a> Intersection<'a> {
+impl<'a> Intersection<'a> {
     pub fn new(distance: f64, object: &'a Box<dyn Drawable>) -> Intersection {
-        Intersection{
+        Intersection {
             distance: distance,
             object: object,
         }

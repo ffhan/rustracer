@@ -1,20 +1,19 @@
 use crate::vector::Vector;
-use crate::base::{Drawable, Intersectable, Ray, Colorable, Color};
+use crate::base::{Drawable, Intersectable, Ray, Color, Point2D, Textureable};
+use crate::material::Material;
 
 pub struct Plane {
     normal: Vector,
     point: Vector,
-    color: Color,
-    n: f64
+    material: Material
 }
 
 impl Plane {
-    pub fn new(normal: Vector, point: Vector, color: Color, n: f64) -> Plane {
+    pub fn new(normal: Vector, point: Vector, material: Material) -> Plane {
         Plane {
             normal: normal,
             point: point,
-            color: color,
-            n: n,
+            material: material,
         }
     }
 }
@@ -38,14 +37,38 @@ impl Intersectable for Plane {
     }
 }
 
-impl Colorable for Plane {
-    fn get_color(&self) -> &Color {
-        &self.color
+impl Drawable for Plane {
+    fn get_glossiness(&self) -> f64 {
+        self.material.get_glossiness()
+    }
+
+    fn get_albedo(&self) -> f64 {
+        self.material.get_albedo()
     }
 }
 
-impl Drawable for Plane {
-    fn get_reflection_exponent(&self) -> f64 {
-        self.n
+impl Textureable for Plane {
+    fn texture_coords(&self, hit_point: &Vector) -> Point2D {
+        let mut x_axis = self.normal.cross(&Vector::new(
+            0.0, 0.0, 1.0)
+        );
+        if x_axis.euclidian_distance() == 0.0 {
+            x_axis = self.normal.cross(&Vector::new(
+                0.0, 1.0, 0.0
+            ));
+        }
+        let y_axis = self.normal.cross(&x_axis);
+
+        let hit_vec = hit_point.minus(&self.point);
+
+        Point2D {
+            x: hit_vec.dot(&x_axis),
+            y: hit_vec.dot(&y_axis),
+        }
+    }
+
+    fn get_texture_color(&self, hit_point: &Vector) -> Color {
+        let tex_coords = self.texture_coords(hit_point);
+        self.material.get_texture().get_color(tex_coords.x, tex_coords.y)
     }
 }

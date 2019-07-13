@@ -1,10 +1,6 @@
-use core::borrow::Borrow;
-use std::f64::MAX;
-
 use image::{DynamicImage, GenericImage, Rgba};
 
-use crate::base::{Color, Colorable, Drawable, Intersectable, Intersection, Ray};
-use crate::lighting::directional::DirectionalLight;
+use crate::base::{Color, Drawable, Intersection, Ray};
 use crate::lighting::Lighting;
 
 const SHADOW_BIAS: f64 = 1e-13;
@@ -91,21 +87,24 @@ impl Scene {
             // calculate if the point is a shadow
             let shadow_ray = Ray::from(
                 hit_point.clone() + (surface_normal.factor(SHADOW_BIAS)),
-                direction_to_light_norm.clone()
+                direction_to_light_norm.clone(),
             );
 
             let shadow_intersection = self.trace(&shadow_ray);
             let in_light = shadow_intersection.is_none() ||
-                shadow_intersection.unwrap().get_distance() > direction_to_light.euclidian_distance();;
+                shadow_intersection.unwrap().get_distance() > direction_to_light.euclidian_distance();
+            ;
 
-            let light_intensity = if in_light {surface_normal.normalize()
-                .dot(&direction_to_light_norm)
-                .powf(intersection.get_object().get_reflection_exponent())
-                .max(0.0) * light.get_intensity(&hit_point)} else {0.0};
+            let light_intensity = if in_light {
+                surface_normal.normalize()
+                    .dot(&direction_to_light_norm)
+                    .powf(intersection.get_object().get_glossiness())
+                    .max(0.0) * light.get_intensity(&hit_point)
+            } else { 0.0 };
             let light_reflected = 1.0; // todo: implementiraj
 
             let light_color = light.get_color().get();
-            let obj_color = intersection.get_object().get_color().get();
+            let obj_color = intersection.get_object().get_texture_color(&hit_point).get();
 
             color[0] += light_color[0] as f64 * obj_color[0] as f64 * light_intensity * light_reflected / 255.0;
             color[1] += light_color[1] as f64 * obj_color[1] as f64 * light_intensity * light_reflected / 255.0;
